@@ -147,7 +147,7 @@ async function main() {
     fileContent = await readFile(inputPath, 'utf8')
   } catch (error) {
     if (error.code === 'ENOENT') {
-      fail('Файл не найден')
+      fail('Ошибка чтения файла: ENOENT')
       return
     }
 
@@ -159,12 +159,12 @@ async function main() {
   try {
     data = JSON.parse(fileContent)
   } catch {
-    fail('Файл содержит некорректный JSON')
+    fail('Ошибка данных')
     return
   }
 
   if (!validateQuizData(data)) {
-    fail('Структура данных некорректна')
+    fail('Ошибка структуры данных')
     return
   }
 
