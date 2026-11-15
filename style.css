@@ -1,3 +1,40 @@
-/* TODO: оформите отчёт без Flexbox и Grid.
-   Нужны минимум три классовых селектора, цвета, padding, border и margin.
-   Карточки сводки и строки участников должны отличаться от фона страницы. */
+body {
+  margin: 0;
+  padding: 24px;
+  background-color: #e8eef5;
+  color: #1a2332;
+}
+
+.report {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 24px;
+  background-color: #f7f9fc;
+  border: 1px solid #c5d0de;
+}
+
+.summary-card {
+  margin: 12px 0;
+  padding: 16px;
+  background-color: #ffffff;
+  border: 1px solid #b8c4d4;
+  color: #243447;
+}
+
+.result-item {
+  margin: 8px 0;
+  padding: 12px 16px;
+  background-color: #ffffff;
+  border: 1px solid #b8c4d4;
+  color: #243447;
+  list-style: none;
+}
+
+.result-list {
+  margin: 16px 0 0;
+  padding: 0;
+}
+
+.result-name {
+  color: #0b5cab;
+}
