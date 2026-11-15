@@ -103,7 +103,15 @@ function createReportHtml(report) {
 }
 
 function printSummary(report) {
-  // TODO: напечатайте пять строк контрольной сводки без отладочного вывода.
+  console.log(`Участников: ${report.participantCount}`)
+  console.log(`Средний результат: ${report.averagePercentage}%`)
+  console.log(
+    `Лучший результат: ${report.best.name} — ${report.best.score} из ${report.questionCount} (${report.best.percentage}%)`
+  )
+  console.log(
+    `Порог пройден: ${report.passedCount} из ${report.participantCount}`
+  )
+  console.log('Отчёт: report.html')
 }
 
 // Готовая защитная механика. Вызовите её до чтения входного файла.
@@ -124,12 +132,47 @@ function fail(message) {
 }
 
 async function main() {
-  // TODO: получите путь из process.argv[2].
-  // TODO: удалите старый отчёт, затем прочитайте файл через await и 'utf8'.
-  // TODO: отдельно обработайте ENOENT, ошибку JSON.parse() и неверную структуру.
-  // TODO: рассчитайте данные, создайте HTML и запишите report.html через await.
-  // TODO: напечатайте сводку только после успешной записи.
-  fail('Заготовка: завершите TODO в generator.js')
+  const inputPath = process.argv[2]
+
+  if (!inputPath) {
+    fail('Не указан путь к файлу с результатами')
+    return
+  }
+
+  await removePreviousReport()
+
+  let fileContent
+
+  try {
+    fileContent = await readFile(inputPath, 'utf8')
+  } catch (error) {
+    if (error.code === 'ENOENT') {
+      fail('Файл не найден')
+      return
+    }
+
+    throw error
+  }
+
+  let data
+
+  try {
+    data = JSON.parse(fileContent)
+  } catch {
+    fail('Файл содержит некорректный JSON')
+    return
+  }
+
+  if (!validateQuizData(data)) {
+    fail('Структура данных некорректна')
+    return
+  }
+
+  const report = calculateReport(data)
+  const html = createReportHtml(report)
+
+  await writeFile(outputPath, html, 'utf8')
+  printSummary(report)
 }
 
 main()
